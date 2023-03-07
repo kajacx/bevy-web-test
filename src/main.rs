@@ -1,18 +1,8 @@
-use bevy::{prelude::*, render::RenderPlugin, scene::ScenePlugin, time::TimePlugin};
+use bevy::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugin(CorePlugin::default())
-        .add_plugin(TransformPlugin::default())
-        .add_plugin(WindowPlugin::default())
-        .add_plugin(AssetPlugin::default())
-        .add_plugin(RenderPlugin::default())
-        .add_plugin(ImagePlugin::default())
-        .add_plugin(ScenePlugin::default())
-        .add_plugin(TimePlugin::default())
-        //.add_plugins(DefaultPlugins)
-        //.add_plugin(LogDiagnosticsPlugin::default())
-        //.add_plugin(FrameTimeDiagnosticsPlugin::default())
+        .add_plugins(DefaultPlugins)
         .insert_resource(ClearColor(Color::rgb(0.8, 0.4, 0.1)))
         .add_startup_system(setup)
         .run();
