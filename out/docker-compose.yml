@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  bevy-test-webserver:
+    image: nginx:latest
+    container_name: bevy-test-webserver
+    ports:
+      - "8089:80"
+    volumes:
+      - .:/usr/share/nginx/html
+    restart: unless-stopped
