@@ -1,10 +1,10 @@
 use bevy::prelude::*;
-use wai_bindgen_wasmer::wasmer::*;
+use wai_bindgen_wasmtime::*;
 
 const PLUGIN_BYTES: &'static [u8] =
     include_bytes!("../../plugin/target/wasm32-unknown-unknown/debug/wai_sample_plugin.wasm");
 
-wai_bindgen_wasmer::import!("../protocol-plugin.wai");
+wai_bindgen_wasmtime::import!("../protocol-plugin.wai");
 
 fn main() {
     let plugin_color = get_color();
@@ -22,13 +22,21 @@ fn setup(mut commands: Commands) {
 }
 
 fn get_color() -> protocol_plugin::Color {
-    let mut store = Store::new(Engine::default());
+    let config = Config::new();
+    let engine = Engine::new(&config).expect("should create engine");
 
-    let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
+    let mut linker = Linker::<SampleProtocolPluginData>::new(&engine);
+    // sample_protocol_host::add_to_linker(&mut linker, |data| data).expect("should link host fns");
 
-    let (plugin, _) =
-        protocol_plugin::ProtocolPlugin::instantiate(&mut store, &module, &mut imports! {})
-            .expect("should create instance");
+    let module = Module::new(&engine, PLUGIN_BYTES).expect("should load module from bytes");
+
+    let (plugin, _instance) = sample_protocol_plugin::SampleProtocolPlugin::instantiate(
+        &mut store,
+        &module,
+        &mut linker,
+        |data| data,
+    )
+    .expect("should create instance");
 
     plugin.get_color(&mut store).expect("should get color")
 }

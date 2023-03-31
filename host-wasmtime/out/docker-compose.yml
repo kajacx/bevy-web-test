@@ -1,11 +1,11 @@
 version: "3.7"
 
 services:
-  bevy-test-wasmer:
+  bevy-test-wasmtime:
     image: nginx:latest
-    container_name: bevy-test-wasmer
+    container_name: bevy-test-wasmtime
     ports:
-      - "8089:80"
+      - "8090:80"
     volumes:
       - .:/usr/share/nginx/html
     restart: unless-stopped
