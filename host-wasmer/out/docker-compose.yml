@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  bevy-test-webserver:
+  bevy-test-wasmer:
     image: nginx:latest
-    container_name: bevy-test-webserver
+    container_name: bevy-test-wasmer
     ports:
       - "8089:80"
     volumes:
