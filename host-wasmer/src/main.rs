@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+wai_bindgen_wasmer::import!("../protocol-plugin.wai");
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
