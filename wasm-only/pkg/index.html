@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
     <title>wasm only</title>
+    <base href="." />
 
     <style>
       body,
@@ -22,8 +23,10 @@
   </head>
   <body>
     <script type="module">
-      import init from "./bevy-web-test.js";
-      init("./bevy-web-test_bg.wasm");
+      // import init from "./bevy-web-test.js";
+      // init("./bevy-web-test_bg.wasm");
+      import * as wasm from "./wasm_only.js";
+      wasm.greet();
     </script>
   </body>
 </html>
