@@ -25,7 +25,10 @@
     <script type="module">
       // import init from "./bevy-web-test.js";
       // init("./bevy-web-test_bg.wasm");
-      import * as wasm from "./wasm_only.js";
+      // import * as wasm from "./wasm_only.js";
+      // wasm.greet();
+      import init from "./wasm_only.js";
+      let wasm = await init("./wasm_only_bg.wasm");
       wasm.greet();
     </script>
   </body>
