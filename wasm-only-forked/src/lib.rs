@@ -32,7 +32,8 @@ pub fn print_color() {
 }
 
 fn get_color() -> protocol_plugin::Color {
-    let mut store = Store::new(Engine::default());
+    //let mut store = Store::new(Engine::default());
+    let mut store = Store::new();
 
     let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
 

@@ -1,11 +1,11 @@
 version: "3.7"
 
 services:
-  wasm-only:
+  wasm-only-forked:
     image: nginx:latest
-    container_name: wasm-only
+    container_name: wasm-only-forked
     ports:
-      - "8091:80"
+      - "8092:80"
     volumes:
       - .:/usr/share/nginx/html
     networks: []
