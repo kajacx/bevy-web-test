@@ -16,7 +16,8 @@ fn main() -> Result<u32, Box<dyn std::error::Error>> {
     .as_ref();
 
     // Create the store
-    let mut store = Store::new();
+    // let mut store = Store::new();
+    let mut store = Store::new(Engine::default());
 
     println!("Compiling module...");
     // Let's compile the Wasm module.
@@ -91,6 +92,7 @@ fn main() -> Result<u32, Box<dyn std::error::Error>> {
 
 #[wasm_bindgen]
 pub fn run_main() -> u32 {
+    console_error_panic_hook::set_once();
     main().expect("should run main")
 }
 
