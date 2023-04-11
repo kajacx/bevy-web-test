@@ -1,9 +1,13 @@
+use wasm_bindgen::prelude::*;
 use wasmer::*;
 
 struct Env {
     instance: Option<&'static Instance>,
     store: usize,
 }
+
+unsafe impl Send for Env {}
+unsafe impl Sync for Env {}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let wasm_bytes = include_bytes!(
@@ -12,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     .as_ref();
 
     // Create the store
-    let mut store = Store::new(Cranelift::default());
+    let mut store = Store::new();
 
     println!("Compiling module...");
     // Let's compile the Wasm module.
@@ -86,7 +90,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[wasm_bindgen]
-fn run_main() {
+pub fn run_main() {
     main().expect("should run main");
 }
 
