@@ -85,6 +85,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[wasm_bindgen]
+fn run_main() {
+    main().expect("should run main");
+}
+
 fn grow_strings(
     memory: &Memory,
     store: &mut Store,
