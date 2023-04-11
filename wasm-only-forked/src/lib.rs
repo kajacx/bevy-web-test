@@ -26,14 +26,19 @@ pub fn greet() {
 }
 
 #[wasm_bindgen]
+pub fn print_eight() {
+    set_panic_hook();
+    alert(&format!("5 + 3 = {:?}", add_three(5)));
+}
+
+#[wasm_bindgen]
 pub fn print_color() {
     set_panic_hook();
     alert(&format!("COLOR IS: {:?}", get_color()));
 }
 
 fn get_color() -> protocol_plugin::Color {
-    //let mut store = Store::new(Engine::default());
-    let mut store = Store::new();
+    let mut store = create_store();
 
     let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
 
@@ -42,4 +47,24 @@ fn get_color() -> protocol_plugin::Color {
             .expect("should create instance");
 
     plugin.get_color(&mut store).expect("should get color")
+}
+
+fn add_three(number: u32) -> u32 {
+    let mut store = create_store();
+
+    let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
+
+    let (plugin, _) =
+        protocol_plugin::ProtocolPlugin::instantiate(&mut store, &module, &mut imports! {})
+            .expect("should create instance");
+
+    plugin
+        .add_three(&mut store, number)
+        .expect("should add three")
+}
+
+fn create_store() -> Store {
+    Store::new(Engine::default())
+
+    //Store::new()
 }

@@ -1,3 +1,5 @@
+add-three: func(number: u32) -> u32
+
 get-color: func() -> color
 
 record color {
