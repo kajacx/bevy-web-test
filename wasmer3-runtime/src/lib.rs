@@ -9,7 +9,7 @@ struct Env {
 unsafe impl Send for Env {}
 unsafe impl Sync for Env {}
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<u32, Box<dyn std::error::Error>> {
     let wasm_bytes = include_bytes!(
         "../../wasmer-plugin/target/wasm32-unknown-unknown/debug/wasmer_plugin.wasm"
     )
@@ -86,12 +86,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    Ok(())
+    Ok(compare_string.len() as u32)
 }
 
 #[wasm_bindgen]
-pub fn run_main() {
-    main().expect("should run main");
+pub fn run_main() -> u32 {
+    main().expect("should run main")
 }
 
 fn grow_strings(

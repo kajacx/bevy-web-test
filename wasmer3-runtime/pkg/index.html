@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
-    <title>wasm only forked</title>
+    <title>wasmem3 manual memory</title>
     <base href="." />
 
     <style>
@@ -27,10 +27,11 @@
       // init("./bevy-web-test_bg.wasm");
       // import * as wasm from "./wasm_only.js";
       // wasm.greet();
-      import init from "./wasm_only.js";
-      let wasm = await init("./wasm_only_bg.wasm");
-      wasm.greet();
-      wasm.print_color();
+      import init from "./wasmer_usage.js";
+      let wasm = await init("./wasmer_usage_bg.wasm");
+
+      alert("starting wasm");
+      alert("result is: " + wasm.run_main());
     </script>
   </body>
 </html>
