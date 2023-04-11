@@ -108,9 +108,9 @@ fn grow_strings(
 
     let push_str = instance
         .exports
-        .get_typed_function::<u64, u64>(&store, "push_string")
+        .get_typed_function::<i64, i64>(&store, "push_string")
         .unwrap();
-    let ret = push_str.call(store, exported).unwrap();
+    let ret = push_str.call(store, exported as i64).unwrap() as u64;
 
     let imported = import_from_plugin(instance, memory, store, ret);
     let check = String::from_utf8(imported).unwrap();
@@ -124,9 +124,9 @@ fn shrink_strings(store: &mut Store, instance: &Instance, compare_string: &mut S
     shrink_string(compare_string, n);
     let rm_chars = instance
         .exports
-        .get_typed_function::<u32, ()>(&store, "remove_chars")
+        .get_typed_function::<i32, ()>(&store, "remove_chars")
         .unwrap();
-    rm_chars.call(store, n).unwrap();
+    rm_chars.call(store, n as i32).unwrap();
 }
 
 fn import_from_plugin(
@@ -142,9 +142,9 @@ fn import_from_plugin(
 
     let free = instace
         .exports
-        .get_typed_function::<u64, ()>(store, "free_from_host")
+        .get_typed_function::<i64, ()>(store, "free_from_host")
         .unwrap();
-    free.call(store, fatptr).unwrap();
+    free.call(store, fatptr as i64).unwrap();
 
     bytes
 }
@@ -152,9 +152,9 @@ fn import_from_plugin(
 fn export_to_plugin(memory: &Memory, store: &mut Store, instance: &Instance, data: &[u8]) -> u64 {
     let allocate = instance
         .exports
-        .get_typed_function::<u32, u64>(&store, "allocate_for_host")
+        .get_typed_function::<i32, i64>(&store, "allocate_for_host")
         .unwrap();
-    let mut allocate = |size: u32| allocate.call(store, size).unwrap();
+    let mut allocate = |size: u32| allocate.call(store, size as i32).unwrap() as u64;
 
     let fatptr = allocate(data.len() as u32);
     let (addr, _) = from_fatptr(fatptr);
