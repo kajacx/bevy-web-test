@@ -96,6 +96,28 @@ pub fn run_main() -> u32 {
     main().expect("should run main")
 }
 
+#[wasm_bindgen]
+pub fn call_take_u32() {
+    console_error_panic_hook::set_once();
+
+    let wasm_bytes = include_bytes!(
+        "../../wasmer-plugin/target/wasm32-unknown-unknown/debug/wasmer_plugin.wasm"
+    )
+    .as_ref();
+
+    let mut store = Store::new(Engine::default());
+    let module = Module::new(&store, wasm_bytes)?;
+
+    let import_object = imports! {};
+    let instance = Instance::new(&mut store, &module, &import_object)?;
+
+    let take_u32 = instance
+        .exports
+        .get_typed_function::<u32, ()>(&store, "take_u32")
+        .unwrap();
+    take_u32.call(&mut store, 5u32).unwrap();
+}
+
 fn grow_strings(
     memory: &Memory,
     store: &mut Store,

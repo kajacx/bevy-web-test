@@ -101,3 +101,16 @@ fn from_fatptr(fatptr: u64) -> (usize, usize) {
 fn to_fatptr(addr: usize, len: usize) -> u64 {
     (addr as u32) as u64 | (len as u64) << 32
 }
+
+#[no_mangle]
+pub fn takes_u32(_arg: u32) {}
+
+#[no_mangle]
+pub fn returns_u32() -> u32 {
+    42
+}
+
+#[no_mangle]
+pub fn add_ten(value: u32) -> u32 {
+    value + 10
+}

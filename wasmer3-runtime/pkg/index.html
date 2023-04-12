@@ -31,6 +31,8 @@
       let wasm = await init("./wasmer_usage_bg.wasm");
 
       alert("starting wasm");
+      wasm.call_take_u32();
+      alert("took u32");
       alert("result is: " + wasm.run_main());
     </script>
   </body>
