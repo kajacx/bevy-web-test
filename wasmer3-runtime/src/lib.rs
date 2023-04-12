@@ -97,7 +97,7 @@ pub fn run_main() -> u32 {
 }
 
 #[wasm_bindgen]
-pub fn call_take_u32() {
+pub fn call_take_u32() -> String {
     console_error_panic_hook::set_once();
 
     let wasm_bytes = include_bytes!(
@@ -106,16 +106,27 @@ pub fn call_take_u32() {
     .as_ref();
 
     let mut store = Store::new(Engine::default());
-    let module = Module::new(&store, wasm_bytes)?;
+    let module = Module::new(&store, wasm_bytes).unwrap();
 
-    let import_object = imports! {};
-    let instance = Instance::new(&mut store, &module, &import_object)?;
+    let import_object = imports! {
+           "my_imports" => {
+    "transform_string" => Function::new_typed(&mut store, | input: u64| {
+               })
+           }
+       };
+    let instance = Instance::new(&mut store, &module, &import_object).unwrap();
 
-    let take_u32 = instance
+    let add_ten = instance
         .exports
-        .get_typed_function::<u32, ()>(&store, "take_u32")
+        .get_typed_function::<u32, u32>(&store, "add_ten")
         .unwrap();
-    take_u32.call(&mut store, 5u32).unwrap();
+    let ten1 = add_ten.call(&mut store, 50).unwrap();
+    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
+    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
+    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+
+    return format!("Results: {ten1}, {ten2}, {ten3}, {ten4}");
+    // return ten2;
 }
 
 fn grow_strings(

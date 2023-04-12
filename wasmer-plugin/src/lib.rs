@@ -112,5 +112,21 @@ pub fn returns_u32() -> u32 {
 
 #[no_mangle]
 pub fn add_ten(value: u32) -> u32 {
-    value + 10
+    // value + 10
+    value.wrapping_add(10)
+}
+
+#[no_mangle]
+pub fn sub_ten(value: u32) -> u32 {
+    value - 10
+}
+
+#[no_mangle]
+pub fn add_twenty(value: u64) -> u64 {
+    value + 20
+}
+
+#[no_mangle]
+pub fn sub_twenty(value: u64) -> u64 {
+    value - 20
 }
