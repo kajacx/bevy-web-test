@@ -38,9 +38,7 @@ pub fn print_color() {
 }
 
 fn get_color() -> protocol_plugin::Color {
-    let mut store = create_store();
-
-    let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
+    let (mut store, module) = create_store();
 
     let (plugin, _) =
         protocol_plugin::ProtocolPlugin::instantiate(&mut store, &module, &mut imports! {})
@@ -50,9 +48,7 @@ fn get_color() -> protocol_plugin::Color {
 }
 
 fn add_three(number: u32) -> u32 {
-    let mut store = create_store();
-
-    let module = Module::new(&store, PLUGIN_BYTES).expect("should create module");
+    let (mut store, module) = create_store();
 
     let (plugin, _) =
         protocol_plugin::ProtocolPlugin::instantiate(&mut store, &module, &mut imports! {})
@@ -63,8 +59,14 @@ fn add_three(number: u32) -> u32 {
         .expect("should add three")
 }
 
-fn create_store() -> Store {
-    Store::new(Engine::default())
-
+fn create_store() -> (Store, Module) {
+    let store = Store::new(Engine::default());
     //Store::new()
+
+    // let bytes = std::fs::read("../../plugin/target/wasm32-unknown-unknown/debug/bevy_plugin.wasm")
+    //     .expect("should read bytes");
+    let bytes = PLUGIN_BYTES;
+    let module = Module::new(&store, &bytes).expect("should create module");
+
+    (store, module)
 }

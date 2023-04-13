@@ -125,8 +125,10 @@ pub fn call_take_u32() -> String {
     let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
     let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
 
-    return format!("Results: {ten1}, {ten2}, {ten3}, {ten4}");
+    let text = format!("Results: {ten1}, {ten2}, {ten3}, {ten4}");
+    //JsValue::from(text)
     // return ten2;
+    text
 }
 
 fn grow_strings(
