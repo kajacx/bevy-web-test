@@ -9,6 +9,11 @@ struct Env {
 unsafe impl Send for Env {}
 unsafe impl Sync for Env {}
 
+#[wasm_bindgen]
+extern "C" {
+    fn alert(s: &str);
+}
+
 fn main() -> Result<u32, Box<dyn std::error::Error>> {
     let wasm_bytes = include_bytes!(
         "../../wasmer-plugin/target/wasm32-unknown-unknown/debug/wasmer_plugin.wasm"
@@ -97,7 +102,11 @@ pub fn run_main() -> u32 {
 }
 
 #[wasm_bindgen]
-pub fn call_take_u32() -> String {
+pub fn call_take_u32() {
+    call_take_u32_raw()
+}
+
+pub fn call_take_u32_raw() {
     console_error_panic_hook::set_once();
 
     let wasm_bytes = include_bytes!(
@@ -116,6 +125,30 @@ pub fn call_take_u32() -> String {
        };
     let instance = Instance::new(&mut store, &module, &import_object).unwrap();
 
+    let text = "".to_string();
+
+    let add_ten = instance
+        .exports
+        .get_typed_function::<u32, u32>(&store, "add_ten")
+        .unwrap();
+    let ten1 = add_ten.call(&mut store, 50).unwrap();
+    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
+    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap();
+    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+
+    let sub_ten = instance
+        .exports
+        .get_typed_function::<u32, u32>(&store, "sub")
+        .unwrap();
+    let ten1 = sub_ten.call(&mut store, 50).unwrap();
+    let ten2 = sub_ten.call(&mut store, u32::MAX / 2 + 2).unwrap();
+    let ten3 = sub_ten.call(&mut store, 6).unwrap();
+    let ten4 = sub_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+
     let add_ten = instance
         .exports
         .get_typed_function::<u32, u32>(&store, "add_ten")
@@ -125,10 +158,29 @@ pub fn call_take_u32() -> String {
     let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
     let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
 
-    let text = format!("Results: {ten1}, {ten2}, {ten3}, {ten4}");
-    //JsValue::from(text)
-    // return ten2;
-    text
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+
+    let add_ten = instance
+        .exports
+        .get_typed_function::<u32, u32>(&store, "add_ten")
+        .unwrap();
+    let ten1 = add_ten.call(&mut store, 50).unwrap();
+    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
+    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
+    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+    let add_ten = instance
+        .exports
+        .get_typed_function::<u32, u32>(&store, "add_ten")
+        .unwrap();
+    let ten1 = add_ten.call(&mut store, 50).unwrap();
+    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
+    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
+    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+    alert(&text);
 }
 
 fn grow_strings(
