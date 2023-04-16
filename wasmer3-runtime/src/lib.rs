@@ -140,7 +140,7 @@ pub fn call_take_u32_raw() {
 
     let sub_ten = instance
         .exports
-        .get_typed_function::<u32, u32>(&store, "sub")
+        .get_typed_function::<u32, u32>(&store, "sub_ten")
         .unwrap();
     let ten1 = sub_ten.call(&mut store, 50).unwrap();
     let ten2 = sub_ten.call(&mut store, u32::MAX / 2 + 2).unwrap();
@@ -149,37 +149,40 @@ pub fn call_take_u32_raw() {
 
     let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
 
-    let add_ten = instance
+    alert("A");
+    let add_twenty = instance
         .exports
-        .get_typed_function::<u32, u32>(&store, "add_ten")
+        .get_typed_function::<u64, u64>(&store, "add_twenty")
         .unwrap();
-    let ten1 = add_ten.call(&mut store, 50).unwrap();
-    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
-    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
-    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+    alert("A1");
+    let ten1 = add_twenty.call(&mut store, 50).unwrap();
+    alert("A2");
+    let ten2 = add_twenty.call(&mut store, u64::MAX / 2 - 22).unwrap();
+    alert("A3");
+    let ten3 = add_twenty.call(&mut store, u64::MAX - 26).unwrap_or(666);
+    alert("A4");
+    let ten4 = add_twenty.call(&mut store, u64::MAX / 2 + 500).unwrap();
+    alert("A5");
 
     let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
 
-    let add_ten = instance
+    alert("B");
+    let sub_twenty = instance
         .exports
-        .get_typed_function::<u32, u32>(&store, "add_ten")
+        .get_typed_function::<u64, u64>(&store, "sub_twenty")
         .unwrap();
-    let ten1 = add_ten.call(&mut store, 50).unwrap();
-    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
-    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
-    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
+    alert("B1");
+    let ten1 = sub_twenty.call(&mut store, 50).unwrap();
+    alert("B2");
+    let ten2 = sub_twenty.call(&mut store, u64::MAX / 2 + 2).unwrap();
+    alert("B3");
+    let ten3 = sub_twenty.call(&mut store, 6).unwrap_or(666);
+    alert("B4");
+    let ten4 = sub_twenty.call(&mut store, u64::MAX / 2 + 500).unwrap();
+    alert("B5");
 
     let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
-    let add_ten = instance
-        .exports
-        .get_typed_function::<u32, u32>(&store, "add_ten")
-        .unwrap();
-    let ten1 = add_ten.call(&mut store, 50).unwrap();
-    let ten2 = add_ten.call(&mut store, u32::MAX / 2 - 2).unwrap();
-    let ten3 = add_ten.call(&mut store, u32::MAX - 6).unwrap_or(666);
-    let ten4 = add_ten.call(&mut store, u32::MAX / 2 + 500).unwrap();
 
-    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
     alert(&text);
 }
 
