@@ -1,0 +1,8 @@
+[package]
+name = "wasm-only"
+version = "0.1.0"
+authors = ["kajacx <kajacx@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+wasmer = "3.1"
