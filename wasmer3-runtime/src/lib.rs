@@ -149,6 +149,23 @@ pub fn call_take_u32_raw() {
 
     let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
 
+    alert("XA");
+    let add_twenty = instance
+        .exports
+        .get_typed_function::<i64, i64>(&store, "add_twenty")
+        .unwrap();
+    alert("XA1");
+    let ten1 = add_twenty.call(&mut store, 50).unwrap();
+    alert("XA2");
+    let ten2 = add_twenty.call(&mut store, -2).unwrap_or(666);
+    alert("XA3");
+    let ten3 = add_twenty.call(&mut store, i64::MAX - 6).unwrap_or(666);
+    alert("XA4");
+    let ten4 = add_twenty.call(&mut store, i64::MIN + 500).unwrap_or(666);
+    alert("XA5");
+
+    let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
+
     alert("A");
     let add_twenty = instance
         .exports
@@ -157,11 +174,13 @@ pub fn call_take_u32_raw() {
     alert("A1");
     let ten1 = add_twenty.call(&mut store, 50).unwrap();
     alert("A2");
-    let ten2 = add_twenty.call(&mut store, u64::MAX / 2 - 22).unwrap();
+    let ten2 = add_twenty.call(&mut store, u64::MAX / 2 - 2).unwrap_or(666);
     alert("A3");
-    let ten3 = add_twenty.call(&mut store, u64::MAX - 26).unwrap_or(666);
+    let ten3 = add_twenty.call(&mut store, u64::MAX - 6).unwrap_or(666);
     alert("A4");
-    let ten4 = add_twenty.call(&mut store, u64::MAX / 2 + 500).unwrap();
+    let ten4 = add_twenty
+        .call(&mut store, u64::MAX / 2 + 500)
+        .unwrap_or(666);
     alert("A5");
 
     let text = text + &format!("Results: {ten1}, {ten2}, {ten3}, {ten4}\n");
